@@ -25,7 +25,7 @@ Before running the script, ensure you have:
 Clone the repository to your local machine using:
 
 ```bash
-git clone https://github.com/your-username/your-repository-name.git
+git clone https://github.com/rygreen93/profit_transfer.git
 ```
 
 Navigate to the script directory:
@@ -58,16 +58,16 @@ Ensure this file is added to your `.gitignore` to keep your credentials secure.
 Run the script with the following command:
 
 ```bash
-python main.py
+python3 profit_transfer.py
 ```
 
 To specify a percentage of the profit to transfer, use the `-p` argument:
 
 ```bash
-python main.py -p 20
+python3 profit_transfer.py -p 20
 ```
 
-This will transfer 20% of the profit. If no percentage is specified, the script defaults to transferring 100% of the profit.
+This will transfer 20% of the profit. If no percentage is specified, the script defaults to transferring 20% of the profit.
 
 ## Logs
 
