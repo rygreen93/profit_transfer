@@ -37,7 +37,7 @@ cd your-repository-name
 Install the required dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Configuration
