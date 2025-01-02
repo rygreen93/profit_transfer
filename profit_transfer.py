@@ -7,6 +7,27 @@ import schedule
 import time
 from datetime import datetime
 import uuid
+import logging
+import traceback  # Add this if not already imported
+
+# Add this new function for transferring from Unified to Funding
+async def transfer_from_unified_to_funding(bot, coin: str, amount: float):
+    transferred = None
+    try:
+        transferred = await bot.cc.private_post_v5_asset_transfer_inter_transfer(
+            params={
+                "transferId": str(uuid.uuid4()),
+                "coin": coin,
+                "amount": str(amount),
+                "fromAccountType": "UNIFIED",
+                "toAccountType": "FUND",
+            }
+        )
+        return transferred
+    except Exception as e:
+        logging.error(f"Error transferring from unified to funding: {e}")
+        traceback.print_exc()
+        return None
 
 # Create an argument parser for command-line options
 parser = argparse.ArgumentParser(description='Script to periodically log trades and transfer a percentage of profit.')
@@ -65,15 +86,17 @@ def log_last_hour_trades_and_total_profit(session, log_file_path, start_time):
 
 def transfer_profit(session, amount):
     try:
-        transfer_id = str(uuid.uuid4())
         # Round the amount to two decimal places
         rounded_amount = round(amount, 2)
+        transfer_id = str(uuid.uuid4())
+
+        # Use the new Unified to Funding transfer logic
         response = session.create_internal_transfer(
             transferId=transfer_id,
-            coin="USDT",  # Change to the correct coin symbol for USD
+            coin="USDT",  # Change to the correct coin symbol
             amount=str(rounded_amount),  # Use rounded amount as a string
-            fromAccountType="CONTRACT",
-            toAccountType="SPOT"
+            fromAccountType="UNIFIED",
+            toAccountType="FUND"
         )
         if response['retCode'] == 0:
             return response['result']['transferId']
